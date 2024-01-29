@@ -13,7 +13,7 @@ namespace Logic.Hero
         #endregion
         #region Private Fields
 
-        private Camera mainCamera;
+        private UnityEngine.Camera mainCamera;
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace Logic.Hero
         private void Start()
         {
             // Cache the camera, Camera.main is an expensive operation.
-            mainCamera = Camera.main;
+            mainCamera = UnityEngine.Camera.main;
         }
 
         private void Update()

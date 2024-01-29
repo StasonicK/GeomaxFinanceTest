@@ -10,7 +10,7 @@ namespace Logic.Hero
         [SerializeField] private float _thresholdMagnitude = 100f;
         [SerializeField] private LayerMask groundMask;
 
-        private Camera _camera;
+        private UnityEngine.Camera _camera;
         private HeroInput _heroInput;
         private Vector2 _mousePosition;
         private Vector3 _mousePositionToLookAt;
@@ -33,7 +33,7 @@ namespace Logic.Hero
 
         private void Awake()
         {
-            _camera = Camera.main;
+            _camera = UnityEngine.Camera.main;
             _heroInput = new HeroInput();
             _currentRotation = transform.rotation;
         }
