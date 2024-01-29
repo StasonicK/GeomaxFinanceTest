@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 784681663066392322}
   - component: {fileID: 127728759183732578}
   - component: {fileID: 1819274620796852407}
+  - component: {fileID: 1172983510495164482}
   m_Layer: 7
   m_Name: ContractKiller
   m_TagString: Untagged
@@ -360,6 +361,25 @@ MonoBehaviour:
   _shootPoint: {fileID: 9076152926748278065}
   _bulletForce: 5
   _shootVfx: {fileID: 3378802616602865927}
+--- !u!114 &1172983510495164482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121871766643564579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1c23b4e009d47c4b40b5675dab7efd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _laserRenderer: {fileID: 5843750493183602847}
+  _laserMask:
+    serializedVersion: 2
+    m_Bits: 320
+  _laserLength: 30
+  _prefabSpawn: {fileID: 9076152926748278065}
+  _aimedTransform: {fileID: 9076152926748278065}
 --- !u!1 &1331109199415220538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,6 +2137,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2680587525832289847, guid: 5928b07c18727fe47acb7df646f608ef, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2133,6 +2157,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8aed2d72c5249238868fa57b106de23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!120 &5843750493183602847 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 2680587525832289847, guid: 5928b07c18727fe47acb7df646f608ef, type: 3}
+  m_PrefabInstance: {fileID: 8370626259023781544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8370626259023905832 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 5928b07c18727fe47acb7df646f608ef, type: 3}
