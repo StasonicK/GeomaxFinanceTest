@@ -5,7 +5,5 @@ namespace Logic
         Unknown,
         Idle,
         Walking,
-        Running,
-        Jumping,
     }
 }
