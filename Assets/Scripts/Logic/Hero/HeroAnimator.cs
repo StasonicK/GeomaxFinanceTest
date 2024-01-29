@@ -6,15 +6,10 @@ namespace Logic.Hero
     {
         private Animator _animator;
 
-        private readonly int _horizontalInputHash = Animator.StringToHash("HorizontalInput");
-        private readonly int _walkHash = Animator.StringToHash("Walking");
-        private readonly int _runHash = Animator.StringToHash("Running");
-        private readonly int _jumpHash = Animator.StringToHash("Jumping");
-        private readonly int _aimHash = Animator.StringToHash("Aiming");
         private readonly int _idleStateHash = Animator.StringToHash("IdleState");
-        private readonly int _walkingTreeStateHash = Animator.StringToHash("WalkingTree");
-        private readonly int _runningTreeStateHash = Animator.StringToHash("RunningTree");
-        private readonly int _jumpingTreeStateHash = Animator.StringToHash("JumpingTree");
+        private readonly int _walkStateHash = Animator.StringToHash("WalkState");
+        private readonly int _aimStateHash = Animator.StringToHash("AimState");
+        private readonly int _shootHash = Animator.StringToHash("Shoot");
 
         public AnimatorState State { get; private set; }
 
@@ -24,33 +19,17 @@ namespace Logic.Hero
         private void Start() =>
             PlayIdle();
 
-        public void SetHorizontalInput(float value)
-        {
-            _animator.SetFloat(_horizontalInputHash, value);
-        }
+        public void PlayIdle() =>
+            _animator.Play(_idleStateHash);
 
-        public void PlayIdle()
-        {
-            _animator.SetBool("Aiming", false);
-            _animator.SetFloat ("Speed", 0f);
-        }
-
-        public void PlayWalk()
-        {
-        }
-
-        public void PlayRun()
-        {
-            _animator.SetBool(_runHash, true);
-        }
-
-        public void PlayJump()
-        {
-            _animator.SetTrigger(_jumpHash);
-        }
+        public void PlayWalk() =>
+            _animator.Play(_walkStateHash);
 
         public void PlayAim() =>
-            _animator.SetBool(_aimHash, true);
+            _animator.Play(_aimStateHash);
+
+        public void PlayShoot() =>
+            _animator.SetTrigger(_shootHash);
 
         public void EnteredState(int stateHash) =>
             State = StateFor(stateHash);
@@ -65,12 +44,8 @@ namespace Logic.Hero
 
             if (stateHash == _idleStateHash)
                 state = AnimatorState.Idle;
-            else if (stateHash == _walkingTreeStateHash)
+            else if (stateHash == _walkStateHash)
                 state = AnimatorState.Walking;
-            else if (stateHash == _runningTreeStateHash)
-                state = AnimatorState.Running;
-            else if (stateHash == _jumpingTreeStateHash)
-                state = AnimatorState.Jumping;
             else
                 state = AnimatorState.Unknown;
 

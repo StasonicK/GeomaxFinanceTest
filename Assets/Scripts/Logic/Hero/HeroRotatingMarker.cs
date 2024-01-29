@@ -4,6 +4,5 @@ namespace Logic.Hero
 {
     public class HeroRotatingMarker : MonoBehaviour
     {
-        
     }
 }

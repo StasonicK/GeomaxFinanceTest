@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Logic.Hero
 {
@@ -7,16 +8,16 @@ namespace Logic.Hero
     public class HeroMovement : MonoBehaviour
     {
         [SerializeField] private float _walkForwardSpeed = 3f;
-        [SerializeField] private float _walkBackSpeed = 2f;
-        [SerializeField] private float _runForwardSpeed = 7f;
-        [SerializeField] private float _runBackSpeed = 5f;
 
         private HeroInput _heroInput;
         private CharacterController _characterController;
+
         private HeroAnimator _heroAnimator;
+
         private bool _isGrounded;
         private Vector3 _velocity;
         private Vector3 _direction;
+        private bool _isAim;
 
         private void Awake()
         {
@@ -25,76 +26,53 @@ namespace Logic.Hero
             _heroAnimator = GetComponent<HeroAnimator>();
         }
 
-        private void OnEnable() =>
+        private void OnEnable()
+        {
+            _heroInput.Hero.Aim.performed += DoAim;
+            _heroInput.Hero.Aim.canceled += StopAim;
             _heroInput.Enable();
+        }
 
-        private void OnDisable() =>
+        private void OnDisable()
+        {
             _heroInput.Disable();
+            _heroInput.Hero.Aim.performed -= DoAim;
+            _heroInput.Hero.Aim.canceled -= StopAim;
+        }
 
         private void Update() =>
             Move();
 
+        private void DoAim(InputAction.CallbackContext obj) =>
+            _isAim = true;
+
+        private void StopAim(InputAction.CallbackContext obj) =>
+            _isAim = false;
+
         private void Move()
         {
-            Vector2 movementInput = _heroInput.Hero.Move.ReadValue<Vector2>();
-            Vector3 airDirection = Vector3.zero;
+            if (_isAim)
+            {
+                _heroAnimator.PlayAim();
+                return;
+            }
 
-            if (_characterController.isGrounded)
-                airDirection = transform.forward * movementInput.y + transform.right * movementInput.x;
-            else
-                _direction = transform.forward * movementInput.y + transform.right * movementInput.x;
+            Vector2 movementInput = _heroInput.Hero.Move.ReadValue<Vector2>();
+            _direction = transform.forward * movementInput.y + transform.right * movementInput.x;
 
             if (movementInput.magnitude > Constants.MinimumMagnitude)
-            {
-                // if (_inputService.IsRunButtonUp())
-                //     SetRun(airDirection, movementInput);
-                // else
-                SetWalk(airDirection, movementInput);
-            }
+                SetWalk();
             else
-            {
-                SetIdle(movementInput);
-            }
+                SetIdle();
         }
 
-        private void SetRun(Vector3 airDirection, Vector2 movementInput)
+        private void SetWalk()
         {
-            _characterController.Move((_direction.normalized * GetMovementSpeed(_direction.normalized, true) +
-                                       airDirection.normalized * _walkBackSpeed) * Time.deltaTime);
-            _heroAnimator.SetHorizontalInput(movementInput.y);
-            _heroAnimator.PlayRun();
-        }
-
-        private void SetWalk(Vector3 airDirection, Vector2 movementInput)
-        {
-            _characterController.Move((_direction.normalized * GetMovementSpeed(_direction.normalized, false) +
-                                       airDirection.normalized * _walkBackSpeed) * Time.deltaTime);
-            _heroAnimator.SetHorizontalInput(movementInput.y);
+            _characterController.Move((_direction.normalized * _walkForwardSpeed) * Time.deltaTime);
             _heroAnimator.PlayWalk();
         }
 
-        private void SetIdle(Vector2 movementInput)
-        {
-            _heroAnimator.SetHorizontalInput(movementInput.y);
+        private void SetIdle() =>
             _heroAnimator.PlayIdle();
-        }
-
-        private float GetMovementSpeed(Vector3 direction, bool isRun)
-        {
-            if (isRun)
-            {
-                if (direction.x > 0f)
-                    return _runForwardSpeed;
-                else
-                    return _runBackSpeed;
-            }
-            else
-            {
-                if (direction.x > 0f)
-                    return _walkForwardSpeed;
-                else
-                    return _walkBackSpeed;
-            }
-        }
     }
 }

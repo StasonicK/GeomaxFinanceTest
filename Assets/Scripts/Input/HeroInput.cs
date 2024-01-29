@@ -53,6 +53,24 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""Button"",
+                    ""id"": ""10b59f99-7c73-4e4e-920d-f1f56fc38d8d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa98731b-c98e-4c54-bb4a-e15deff9b811"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +150,28 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
                     ""action"": ""MouseLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""be522118-d00e-4fd1-be5c-7a3092316dec"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""43b61b33-914d-4fcb-b590-3b60dec887fa"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and mouse"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -171,6 +211,8 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
         m_Hero_Move = m_Hero.FindAction("Move", throwIfNotFound: true);
         m_Hero_MousePositon = m_Hero.FindAction("MousePositon", throwIfNotFound: true);
         m_Hero_MouseLook = m_Hero.FindAction("MouseLook", throwIfNotFound: true);
+        m_Hero_Aim = m_Hero.FindAction("Aim", throwIfNotFound: true);
+        m_Hero_Shoot = m_Hero.FindAction("Shoot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -235,6 +277,8 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Hero_Move;
     private readonly InputAction m_Hero_MousePositon;
     private readonly InputAction m_Hero_MouseLook;
+    private readonly InputAction m_Hero_Aim;
+    private readonly InputAction m_Hero_Shoot;
     public struct HeroActions
     {
         private @HeroInput m_Wrapper;
@@ -242,6 +286,8 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Hero_Move;
         public InputAction @MousePositon => m_Wrapper.m_Hero_MousePositon;
         public InputAction @MouseLook => m_Wrapper.m_Hero_MouseLook;
+        public InputAction @Aim => m_Wrapper.m_Hero_Aim;
+        public InputAction @Shoot => m_Wrapper.m_Hero_Shoot;
         public InputActionMap Get() { return m_Wrapper.m_Hero; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -260,6 +306,12 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
             @MouseLook.started += instance.OnMouseLook;
             @MouseLook.performed += instance.OnMouseLook;
             @MouseLook.canceled += instance.OnMouseLook;
+            @Aim.started += instance.OnAim;
+            @Aim.performed += instance.OnAim;
+            @Aim.canceled += instance.OnAim;
+            @Shoot.started += instance.OnShoot;
+            @Shoot.performed += instance.OnShoot;
+            @Shoot.canceled += instance.OnShoot;
         }
 
         private void UnregisterCallbacks(IHeroActions instance)
@@ -273,6 +325,12 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
             @MouseLook.started -= instance.OnMouseLook;
             @MouseLook.performed -= instance.OnMouseLook;
             @MouseLook.canceled -= instance.OnMouseLook;
+            @Aim.started -= instance.OnAim;
+            @Aim.performed -= instance.OnAim;
+            @Aim.canceled -= instance.OnAim;
+            @Shoot.started -= instance.OnShoot;
+            @Shoot.performed -= instance.OnShoot;
+            @Shoot.canceled -= instance.OnShoot;
         }
 
         public void RemoveCallbacks(IHeroActions instance)
@@ -313,5 +371,7 @@ public partial class @HeroInput: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnMousePositon(InputAction.CallbackContext context);
         void OnMouseLook(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
+        void OnShoot(InputAction.CallbackContext context);
     }
 }
